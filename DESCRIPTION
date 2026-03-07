@@ -15,7 +15,8 @@ Imports:
   MatchIt,
   ggplot2,
   stringr,
-  cowplot
+  cowplot,
+  cobalt
 Suggests:
   testthat
 Remotes:

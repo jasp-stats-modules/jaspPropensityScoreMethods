@@ -1,3 +1,56 @@
+.createSummaryTableBefore=function(jaspResults, matched, options) {
+  summary=summary(matched)
+  sumall=summary$sum.all
+  # Prepare data
+  df=as.data.frame(sumall)
+  df$Covariate=rownames(sumall)
+  df=df[, c("Covariate", colnames(sumall))]
+  df=df[, -8]
+  # Auto table from data.frame
+  table=createJaspTable(title = "Confounders balance before matching")
+  table$dependOn(c("method_dropdown", "treatment", "confounders",
+                   "distance_dropdown","ratio", "replacement", "distance"))
+  table$setExpectedSize(nrow(df), length(colnames(df)))
+  # Add all data
+  table$addRows(df)
+  jaspResults[["balanceTableBefore"]]=table
+}
+
+.createSummaryTableAfter=function(jaspResults, matched, options) {
+  summary=summary(matched)
+  summatch=summary$sum.matched
+  # Prepare data
+  df=as.data.frame(summatch)
+  df$Covariate=rownames(summatch)
+  df=df[, c("Covariate", colnames(summatch))]
+  # Auto table from data.frame
+  table=createJaspTable(title = "Confounders balance after matching")
+  table$dependOn(c("method_dropdown", "treatment", "confounders",
+                 "distance_dropdown","ratio", "replacement", "distance"))
+  table$setExpectedSize(nrow(df), length(colnames(df)))
+  # Add all data
+  table$addRows(df)
+  jaspResults[["balanceTableAfter"]]=table
+}
+
+
+.createSampleSizeTable=function(jaspResults, matched, options) {
+  summary=summary(matched)
+  sumnn=summary$nn
+  # Prepare data
+  df=as.data.frame(sumnn)
+  df$Sample=rownames(sumnn)
+  df=df[, c("Sample", colnames(sumnn))]
+  # Auto table from data.frame
+  table=createJaspTable(title = "Sample sizes")
+  table$dependOn(c("method_dropdown", "treatment", "confounders",
+                   "distance_dropdown","ratio", "replacement", "distance"))
+  table$setExpectedSize(nrow(df), length(colnames(df)))
+  # Add all data
+  table$addRows(df)
+  jaspResults[["SampleSizes"]]=table
+}
+
 # love plot
 .createLovePlot=function(jaspResults,matched){
   # plot
@@ -7,7 +60,7 @@
     ggplot2::geom_vline(xintercept = c(-0.1,+0.1),lty=2,col='black')+
     ggplot2::theme(legend.position = 'bottom')
   # create jasp graph
-  lovePlot=createJaspPlot(title = gettext("Love Plot"), width = 300, height = 400)
+  lovePlot=createJaspPlot(title = gettext("Love Plot"), width = 400, height = 500)
   lovePlot$dependOn(c("method_dropdown", "treatment", "confounders","distance_dropdown","ratio","replacement")) # Refresh view whenever a changes
   lovePlot$info=gettext("This figure displays a the standardized mean difference for all the confounders considered")
   jaspResults[["lovePlot"]]=lovePlot
@@ -64,7 +117,7 @@
   col_matched=gridExtra::arrangeGrob(grobs = gglist[(length(covariates)+1):length(gglist)], ncol = 1, nrow = length(covar_types), top = paste("Matched dataset (n=",dim(matcheddf)[1],')',sep=''))
   densityGrobs=gridExtra::grid.arrange(col_unmatched, col_matched, ncol = 2)
   # create Jasp object
-  densityPlot=createJaspPlot(title = gettext("Density Plot"), width = 300, height = 400)
+  densityPlot=createJaspPlot(title = gettext("Density Plot"), width = 400, height = 500)
   densityPlot$dependOn(c("method_dropdown", "treatment", "confounders","distance_dropdown", "ratio","replacement"))
   densityPlot$info=gettext("This figure displays the distribution of the covariates in treated and untreated groups.")
   jaspResults[["densityPlot"]]=densityPlot
@@ -93,6 +146,13 @@ matching=function(jaspResults,dataset,options){
                            replace=options$replacement,
                            distance=distance_lower,
                            method=str_to_lower(options$method_dropdown))
+  #tables
+  ## before
+  .createSummaryTableBefore(jaspResults, matched, options)
+  ## after
+  .createSummaryTableAfter(jaspResults, matched, options)
+  ## sample sizes
+  .createSampleSizeTable(jaspResults, matched, options)
   # density
   .createDensities(jaspResults,dataset,matched)
   # love plot
