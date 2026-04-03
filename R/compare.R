@@ -5,16 +5,12 @@ df=read.csv("C:\\Users\\P095206\\OneDrive - Amsterdam UMC\\Shared material with 
 # perform matching
 match=matchit(trt~age+sex+chol,
               data=df,
-              method='nearest',
+              method='optimal',
               distance='mahalanobis',
+              caliper=NULL,
               ratio=2,
               replace=F)
+# sample size
+dim(match.data(match))[1]
 # summary
 summary(match)
-#
-summary=summary(match)
-sumall=summary$nn
-# Prepare data
-df=as.data.frame(sumall)
-df$Sample=rownames(sumall)
-df=df[, c("Sample", colnames(sumall))]

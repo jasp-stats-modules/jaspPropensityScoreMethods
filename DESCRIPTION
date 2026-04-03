@@ -16,7 +16,8 @@ Imports:
   ggplot2,
   stringr,
   cowplot,
-  cobalt
+  cobalt,
+  optmatch
 Suggests:
   testthat
 Remotes:

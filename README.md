@@ -10,10 +10,10 @@ This module was developed during the first JASP hackathon, in February 2026.
 
 - Options
 
-  - Confounders
-    - Allow non-linear forms in the treatment model
+  - Check that different combinations of matching work
+  - Fix caliper and Mahalanobis pair
   - Allow 'optimal' pairing method
-  - Fix caliper and Mahalanobis distance pair
+  - Allow non-linear forms in the treatment model
   - Save selected dataset
 - Other
 
