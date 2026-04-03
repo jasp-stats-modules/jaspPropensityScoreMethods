@@ -8,17 +8,16 @@ This module was developed during the first JASP hackathon, in February 2026.
 
 ## To do
 
-- Options
+Options
 
-  - Check that different combinations of matching work
-  - Fix caliper and Mahalanobis pair
-  - Allow 'optimal' pairing method
-  - Allow non-linear forms in the treatment model
-  - Save selected dataset
-- Other
+* Allow non-linear forms in the treatment model
+* Save selected dataset
 
-  - Inverse Probability of Treatment Weighting (IPW)
-- Fill in README file
+Other
+
+* Inverse Probability of Treatment Weighting (IPW)
+
+Fill in README file
 
 ## What is propensity score matching
 

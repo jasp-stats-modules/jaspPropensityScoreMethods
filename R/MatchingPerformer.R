@@ -8,7 +8,7 @@
   df=df[, -8]
   # Auto table from data.frame
   table=createJaspTable(title = gettext("Confounders balance before matching"))
-  table$dependOn(c("method_dropdown", "treatment", "confounders",
+  table$dependOn(c("method_dropdown", "treatment", "confounders","customFormula",
                    "distance_dropdown","ratio", "replacement", "distance"))
   table$setExpectedSize(nrow(df), length(colnames(df)))
   # Add all data
@@ -25,7 +25,7 @@
   df=df[, c("Covariate", colnames(summatch))]
   # Auto table from data.frame
   table=createJaspTable(title = gettext("Confounders balance after matching"))
-  table$dependOn(c("method_dropdown", "treatment", "confounders",
+  table$dependOn(c("method_dropdown", "treatment", "confounders","customFormula",
                  "distance_dropdown","ratio", "replacement", "distance"))
   table$setExpectedSize(nrow(df), length(colnames(df)))
   # Add all data
@@ -43,7 +43,7 @@
   df=df[, c("Sample", colnames(sumnn))]
   # Auto table from data.frame
   table=createJaspTable(title = gettext("Sample sizes"))
-  table$dependOn(c("method_dropdown", "treatment", "confounders",
+  table$dependOn(c("method_dropdown", "treatment", "confounders","customFormula",
                    "distance_dropdown","ratio", "replacement", "distance"))
   table$setExpectedSize(nrow(df), length(colnames(df)))
   # Add all data
@@ -61,7 +61,7 @@
     ggplot2::theme(legend.position = 'bottom')
   # create jasp graph
   lovePlot=createJaspPlot(title = gettext("Love Plot"), width = 400, height = 500)
-  lovePlot$dependOn(c("method_dropdown","treatment","confounders",
+  lovePlot$dependOn(c("method_dropdown","treatment","confounders","customFormula",
                          "distance_dropdown","ratio","replacement"))
   lovePlot$info=gettext("This figure displays a the standardized mean difference for all the confounders considered")
   jaspResults[["lovePlot"]]=lovePlot
@@ -168,7 +168,7 @@
   densityPlot = createJaspPlot(title = gettext("Density Plot"), width = 400, height = 500)
 
   densityPlot$dependOn(c("method_dropdown","treatment","confounders",
-    "distance_dropdown","ratio","replacement","opacity",
+    "distance_dropdown","ratio","replacement","opacity","customFormula",
     "untreatedColor","treatedColor"))
 
   densityPlot$info = gettext("This figure displays the distribution of the covariates in treated and untreated groups.")
@@ -176,13 +176,20 @@
   jaspResults[["densityPlot"]] = densityPlot
   densityPlot$plotObject = densityGrobs
 }
+
 # matching performer
 matching=function(jaspResults,dataset,options){
   # define formula
-  f=as.formula(paste(options$treatment,'~',paste(options$confounders,collapse='+')))
+  if (!is.null(options$customFormula) && nchar(options$customFormula) > 0) {
+    # Split user input by + and trim spaces
+    terms=trimws(strsplit(options$customFormula, "\\+")[[1]])
+    f=reformulate(termlabels = terms, response = options$treatment)
+  } else {
+    f=reformulate(termlabels = options$confounders, response = options$treatment)
+  }
   #redefine distance to matchit syntax
   distance_lower=dplyr::case_when(stringr::str_to_lower(options$distance_dropdown)=='probability'~'glm',
-                                  stringr::str_to_lower(options$distance_dropdown)=='Logit'~'logit',
+                                  stringr::str_to_lower(options$distance_dropdown)=='logit'~'logit',
                                   T~'mahalanobis')
   # caliper
   if (isTRUE(options$caliperEnabled) && distance_lower %in% c("glm", "logit")) {

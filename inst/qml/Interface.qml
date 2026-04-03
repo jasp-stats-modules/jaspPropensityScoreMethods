@@ -40,7 +40,24 @@ Form
 		AssignedVariablesList {  name: "treatment"; title: qsTr("Treatment"); allowedColumns: ["nominal"]; info: qsTr("Treatment variable") ; singleVariable: true; minLevels: 2}
 		AssignedVariablesList {  name: "confounders"; title: qsTr("Confounders"); allowedColumns: ["scale","nominal","ordinal"]; info: qsTr("Confounders")}
 	}
-
+	Group {
+    title: qsTr("Non-linear specification of the treatment model  (overrides confounders specification)")
+    
+    TextField {
+        name: "customFormula"
+        label: qsTr("Specify confounders with R syntax")
+        placeholderText: qsTr("e.g., age + I(age^2) + sex + ns(chol,3)")
+        fieldWidth: 400
+        info: qsTr("Specify non-linear relationship between treatment and confounders")
+    }
+    
+    Text {
+        text: qsTr("ℹ️ Available variables: ") + "'" + allVariablesList.valueNames.join("', '") + "'"
+        font.pointSize: 9
+        color: jaspTheme.moderateGray
+        wrapMode: Text.WordWrap
+    }
+	}
 	Group
 	{
 		title: qsTr("Matching specifics")
@@ -102,32 +119,32 @@ Form
 		}
 	}
 
-	Group
-	{
-		title: qsTr("Covariate balance")
+	// Group
+	// {
+	// 	title: qsTr("Covariate balance")
 
-		CheckBox
-		{
-			info: qsTr("This tick mark defines whether the summary of the proedure will be displayed or not")
-			name: "distance"
-			label: qsTr("Summary distance measures")
-			checked: true
-		}
-		CheckBox
-		{
-			info: qsTr("Display love plot")
-			name: "love"
-			label: qsTr("Love plot")
-			checked: true 
-		}
-		CheckBox
-		{
-			info: qsTr("Display distributions of covariates in treated and untreated, before and after matching")
-			name: "densitites"
-			label: qsTr("Density plot")
-			checked: true
-		}
-	}
+	// 	CheckBox
+	// 	{
+	// 		info: qsTr("This tick mark defines whether the summary of the proedure will be displayed or not")
+	// 		name: "distance"
+	// 		label: qsTr("Summary distance measures")
+	// 		checked: true
+	// 	}
+	// 	CheckBox
+	// 	{
+	// 		info: qsTr("Display love plot")
+	// 		name: "love"
+	// 		label: qsTr("Love plot")
+	// 		checked: true 
+	// 	}
+	// 	CheckBox
+	// 	{
+	// 		info: qsTr("Display distributions of covariates in treated and untreated, before and after matching")
+	// 		name: "densitites"
+	// 		label: qsTr("Density plot")
+	// 		checked: true
+	// 	}
+	// }
 	Group {
     title: qsTr("Plot colors")
 
@@ -159,8 +176,6 @@ Form
         }
     }
 }
-	UI.ExportResults{
-		//enabled: exist(matcheddf)
-	}
+
 
 }
