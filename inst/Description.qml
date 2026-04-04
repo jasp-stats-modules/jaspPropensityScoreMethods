@@ -17,7 +17,7 @@ Description
 
 	GroupTitle
 	{
-		title:	qsTr("Basic interactivity")
+		title:	qsTr("Functions")
 	}
 
 	Analysis
@@ -25,15 +25,16 @@ Description
 		title: qsTr("Propensity Score Matching") // Title for window
 		menu: qsTr("Propensity Score Matching")  // Title for ribbon
 		func: "matching"           // Function to be called
-		qml: "Interface.qml"               // Design input window
+		qml: "psmPerformer.qml"               // Design input window
 		requiresData: false                // Allow to run even without data
 	}
 
 	Analysis
 	{
-	  title: qsTr("Loading data")
-	  menu: qsTr("Loading data")
-	  func: "processTable"
-	  qml: "LoadingData.qml"
+	  title: qsTr("Inverse Probability of Treatment Weighting")
+	  menu: qsTr("Inverse Probability of Treatment Weighting")
+	  func: "iptw"
+	  qml: "iptwPerformer.qml"
+	  requiresData: false
 	}
 }

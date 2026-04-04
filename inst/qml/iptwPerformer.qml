@@ -20,94 +20,134 @@ import QtQuick.Layouts
 import JASP.Controls
 import JASP.Widgets
 import JASP
+import "./common/ui" as UI
 
 Form
 {
-  info: qsTr("This example shows how to load a dataset and output it as a table")
+
+  info: qsTr("")
 
   Text
   {
-      text: "This example shows how to load a dataset and output it as a table"
+      text: qsTr("Variables in dataset")
   }
 
   VariablesForm
-  {
-    AvailableVariablesList { name: "allVariables" }
-
-    AssignedVariablesList  {
-      name: "ts"
-      label: qsTr("Times (t)")
-      info: qsTr("This info entry adds documentation to the (i) icon in the analysis file. E.g., Specify variable containing the time.")
-      singleVariable: true
-      allowedColumns: ["scale"]
+	{
+		preferredHeight: jaspTheme.smallDefaultVariablesFormHeight
+		infoLabel: qsTr("Input")
+		AvailableVariablesList{  name: "allVariablesList" }
+		AssignedVariablesList {  name: "treatment"; title: qsTr("Treatment"); allowedColumns: ["nominal"]; info: qsTr("Treatment variable") ; singleVariable: true; minLevels: 2}
+		AssignedVariablesList {  name: "confounders"; title: qsTr("Confounders"); allowedColumns: ["scale","nominal","ordinal"]; info: qsTr("Confounders")}
+	}
+	Group {
+    title: qsTr("Non-linear specification of the treatment model  (overrides confounders specification)")
+    
+    TextField {
+        name: "customFormula"
+        label: qsTr("Specify confounders with R syntax")
+        placeholderText: qsTr("e.g., age + I(age^2) + sex + ns(chol,3)")
+        fieldWidth: 400
+        info: qsTr("Specify non-linear relationship between treatment and confounders")
     }
-
-    AssignedVariablesList  {
-      name: "xs"
-      label: qsTr("Positions (x)")
-      info: qsTr("This info entry adds documentation to the (i) icon in the analysis file. E.g., Specify variable containing the positions.")
-      singleVariable: true
-      allowedColumns: ["scale"]
+    
+    Text {
+        text: qsTr("ℹ️ Available variables: ") + "'" + allVariablesList.valueNames.join("', '") + "'"
+        font.pointSize: 9
+        color: jaspTheme.moderateGray
+        wrapMode: Text.WordWrap
     }
-  }
+	}
+	Group
+	{
+		title: qsTr("Weighting specifics")
 
-  Section
-  {
-    title   : qsTr("Advanced")
-    columns: 1
+		CheckBox
+		{
+			name: "stabilize"           // Single boolean option
+			label: qsTr("Stabilize weights")
+			checked: false
+		}
 
-    Text { text: qsTr("This example shows how to get the factors of a variable") }
+		Group {
+			title: qsTr("Trim weights")
+			enabled: distance_dropdown.currentIndex !== 2
+			visible: controls.distance_dropdown.currentIndex !== 2
+			CheckBox {
+				name: "caliperEnabled"
+				label: qsTr("banana")
+				checked: false
+			}
+			
+			DoubleField {
+				name: "trim"
+				enabled: caliperEnabled.checked
+				label: qsTr("Percentile to trim")
+				defaultValue: 0.01
+				fieldWidth: 50
+				max: 1
+				decimals: 5
+			}
+		}
+	}
 
-    DropDown
-    {
-      id              : nominalOrOrdinalVariables
-      name            : "nominalOrOrdinalVariables"
-      label           : "Nominal or Ordinal variable"
-      addEmptyValue   : true
-      placeholderText : qsTr("Select one variable")
-      source          : [{isDataSetVariables: true, use: "type=nominal|ordinal" } ]
-      info            : qsTr("Only nominal or ordinal variable are available. Choose one of them.")
-    }
+	// Group
+	// {
+	// 	title: qsTr("Covariate balance")
 
-    Text
-    {
-      text          : qsTr("<b>Warning</b>: No nominal or ordinal variable in your dataset.<br>Either change a variable type from scale to nominal (or ordinal), or load another dataset")
-      visible       : nominalOrOrdinalVariables.count === 1 // Empty value is already 1 element.
-    }
+	// 	CheckBox
+	// 	{
+	// 		info: qsTr("This tick mark defines whether the summary of the proedure will be displayed or not")
+	// 		name: "distance"
+	// 		label: qsTr("Summary distance measures")
+	// 		checked: true
+	// 	}
+	// 	CheckBox
+	// 	{
+	// 		info: qsTr("Display love plot")
+	// 		name: "love"
+	// 		label: qsTr("Love plot")
+	// 		checked: true 
+	// 	}
+	// 	CheckBox
+	// 	{
+	// 		info: qsTr("Display distributions of covariates in treated and untreated, before and after matching")
+	// 		name: "densitites"
+	// 		label: qsTr("Density plot")
+	// 		checked: true
+	// 	}
+	// }
+	Group {
+    title: qsTr("Plot colors")
 
-    Group
-    {
-      visible       : nominalOrOrdinalVariables.value !== ""
+    Column {
+        spacing: 6
 
-      ComponentsList
-      {
-        id            : valuePerLevel
-        title         : "Set value for each factor"
-        name          : "values"
-        source        : nominalOrOrdinalVariables.value !== "" ? [{values: [nominalOrOrdinalVariables.value], use: "levels" }] : []
-        headerLabels  : [qsTr("Check"), qsTr("Value")]
-
-        rowComponent: RowLayout
-        {
-          Text        { text: rowValue  ; Layout.preferredWidth: 100 * jaspTheme.uiScale  }
-          CheckBox    { name: "check"   ; Layout.preferredWidth: 100 * jaspTheme.uiScale  }
-          DoubleField { name: "double"                                                    }
+        TextField {
+            name: "untreatedColor"
+            label: qsTr("Untreated")
+            defaultValue: "#FF3300"
+            fieldWidth: 70
         }
-      }
 
-      Text
-      {
-        text          : qsTr("The factors checked in the list above will be present in the dropdown below")
-      }
+        TextField {
+            name: "treatedColor"
+            label: qsTr("Treated")
+            defaultValue: "#0099FF"
+            fieldWidth: 70
+        }
 
-      DropDown
-      {
-        label            : "Checked factors"
-        name            : "checkedFactor"
-        source          : [{ name: "values", condition: "check"}]
-        addEmptyValue   : true
-      }
+        DoubleField {
+            name: "opacity"
+            label: qsTr("Opacity")
+            defaultValue: 0.7
+            min: 0
+            max: 1
+            decimals: 2
+            fieldWidth: 50
+        }
     }
-  }
+}
+
 
 }

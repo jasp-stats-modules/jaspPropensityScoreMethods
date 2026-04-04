@@ -18,7 +18,8 @@ Imports:
   cowplot,
   cobalt,
   optmatch,
-  splines
+  splines,
+  ipw
 Suggests:
   testthat
 Remotes:
