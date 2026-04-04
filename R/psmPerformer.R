@@ -8,7 +8,7 @@
   df=df[, -8]
   # Auto table from data.frame
   table=createJaspTable(title = gettext("Confounders balance before matching"))
-  table$dependOn(c("method_dropdown", "treatment", "confounders","customFormula",
+  table$dependOn(c("method_dropdown", "treatment", "confounders",
                    "distance_dropdown","ratio", "replacement", "distance"))
   table$setExpectedSize(nrow(df), length(colnames(df)))
   # Add all data
@@ -25,7 +25,7 @@
   df=df[, c("Covariate", colnames(summatch))]
   # Auto table from data.frame
   table=createJaspTable(title = gettext("Confounders balance after matching"))
-  table$dependOn(c("method_dropdown", "treatment", "confounders","customFormula",
+  table$dependOn(c("method_dropdown", "treatment", "confounders",
                  "distance_dropdown","ratio", "replacement", "distance"))
   table$setExpectedSize(nrow(df), length(colnames(df)))
   # Add all data
@@ -43,7 +43,7 @@
   df=df[, c("Sample", colnames(sumnn))]
   # Auto table from data.frame
   table=createJaspTable(title = gettext("Sample sizes"))
-  table$dependOn(c("method_dropdown", "treatment", "confounders","customFormula",
+  table$dependOn(c("method_dropdown", "treatment", "confounders",
                    "distance_dropdown","ratio", "replacement", "distance"))
   table$setExpectedSize(nrow(df), length(colnames(df)))
   # Add all data
@@ -61,7 +61,7 @@
     ggplot2::theme(legend.position = 'bottom')
   # create jasp graph
   lovePlot=createJaspPlot(title = gettext("Love Plot"), width = 400, height = 500)
-  lovePlot$dependOn(c("method_dropdown","treatment","confounders","customFormula",
+  lovePlot$dependOn(c("method_dropdown","treatment","confounders",
                          "distance_dropdown","ratio","replacement"))
   lovePlot$info=gettext("This figure displays a the standardized mean difference for all the confounders considered")
   jaspResults[["lovePlot"]]=lovePlot
@@ -71,9 +71,9 @@
 .createDensities=function(jaspResults,dataset,matched,options){
 
   # helper to extract legend
-  get_legend <- function(myggplot) {
-    tmp <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(myggplot))
-    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  get_legend=function(myggplot) {
+    tmp=ggplot2::ggplot_gtable(ggplot2::ggplot_build(myggplot))
+    leg=which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
     tmp$grobs[[leg]]
   }
 
@@ -168,7 +168,7 @@
   densityPlot = createJaspPlot(title = gettext("Density Plot"), width = 400, height = 500)
 
   densityPlot$dependOn(c("method_dropdown","treatment","confounders",
-    "distance_dropdown","ratio","replacement","opacity","customFormula",
+    "distance_dropdown","ratio","replacement","opacity",
     "untreatedColor","treatedColor"))
 
   densityPlot$info = gettext("This figure displays the distribution of the covariates in treated and untreated groups.")
@@ -179,14 +179,17 @@
 
 # matching performer
 matching=function(jaspResults,dataset,options){
-  # define formula
-  if (!is.null(options$customFormula) && nchar(options$customFormula) > 0) {
+  # define formula with custom
+  #if (!is.null(options$customFormula) && nchar(options$customFormula) > 0) {
     # Split user input by + and trim spaces
-    terms=trimws(strsplit(options$customFormula, "\\+")[[1]])
-    f=reformulate(termlabels = terms, response = options$treatment)
-  } else {
-    f=reformulate(termlabels = options$confounders, response = options$treatment)
-  }
+  #  terms=trimws(strsplit(options$customFormula, "\\+")[[1]])
+  #  f=reformulate(termlabels = terms, response = options$treatment)
+  #} else {
+    #f=reformulate(termlabels = options$confounders, response = options$treatment)
+  #}
+
+  # define formula without custom
+  f=as.formula(paste0(options$treatment, "~", paste(options$confounders, collapse=" + ")))
   #redefine distance to matchit syntax
   distance_lower=dplyr::case_when(stringr::str_to_lower(options$distance_dropdown)=='probability'~'glm',
                                   stringr::str_to_lower(options$distance_dropdown)=='logit'~'logit',

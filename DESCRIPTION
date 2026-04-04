@@ -19,7 +19,8 @@ Imports:
   cobalt,
   optmatch,
   splines,
-  ipw
+  ipw,
+  dplyr
 Suggests:
   testthat
 Remotes:

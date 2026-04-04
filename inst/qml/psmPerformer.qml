@@ -40,24 +40,24 @@ Form
 		AssignedVariablesList {  name: "treatment"; title: qsTr("Treatment"); allowedColumns: ["nominal"]; info: qsTr("Treatment variable") ; singleVariable: true; minLevels: 2}
 		AssignedVariablesList {  name: "confounders"; title: qsTr("Confounders"); allowedColumns: ["scale","nominal","ordinal"]; info: qsTr("Confounders")}
 	}
-	Group {
-    title: qsTr("Non-linear specification of the treatment model  (overrides confounders specification)")
+	// Group {
+    // title: qsTr("Non-linear specification of the treatment model  (overrides confounders specification)")
     
-    TextField {
-        name: "customFormula"
-        label: qsTr("Specify confounders with R syntax")
-        placeholderText: qsTr("e.g., age + I(age^2) + sex + ns(chol,3)")
-        fieldWidth: 400
-        info: qsTr("Specify non-linear relationship between treatment and confounders")
-    }
+    // TextField {
+    //     name: "customFormula"
+    //     label: qsTr("Specify confounders with R syntax")
+    //     placeholderText: qsTr("e.g., age + I(age^2) + sex + ns(chol,3)")
+    //     fieldWidth: 400
+    //     info: qsTr("Specify non-linear relationship between treatment and confounders")
+    // }
     
-    Text {
-        text: qsTr("ℹ️ Available variables: ") + "'" + allVariablesList.valueNames.join("', '") + "'"
-        font.pointSize: 9
-        color: jaspTheme.moderateGray
-        wrapMode: Text.WordWrap
-    }
-	}
+    // Text {
+    //     text: qsTr("ℹ️ Available variables: ") + "'" + allVariablesList.valueNames.join("', '") + "'"
+    //     font.pointSize: 9
+    //     color: jaspTheme.moderateGray
+    //     wrapMode: Text.WordWrap
+    // }
+	// }
 	Group
 	{
 		title: qsTr("Matching specifics")

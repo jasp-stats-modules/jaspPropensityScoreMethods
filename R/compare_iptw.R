@@ -1,5 +1,5 @@
 # libraries
-pacman::p_load(dplyr,ipw)
+pacman::p_load(dplyr,ipw,ggplot2)
 # comparison
 df=read.csv("C:\\Users\\P095206\\OneDrive - Amsterdam UMC\\Shared material with Elia\\PhD\\Presentations\\Confounding\\example.csv")
 # perform matching
@@ -9,8 +9,9 @@ weights=ipwpoint(exposure=trt,
               numerator=~1,
               denominator=~age+sex+chol,
               data=df)
-# summary
-summary(match)
-# treatment model formula
-f=match$model$formula
-attr(terms(match$model$formula), "term.labels")
+# associate weight to dataset
+df$weight=weights$ipw.weights
+# plot
+ggplot(df,aes(x=weight,group=trt,fill=trt))+
+  geom_density()+
+  theme_bw()

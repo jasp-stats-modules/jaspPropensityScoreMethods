@@ -40,6 +40,7 @@ Form
 		AssignedVariablesList {  name: "treatment"; title: qsTr("Treatment"); allowedColumns: ["nominal"]; info: qsTr("Treatment variable") ; singleVariable: true; minLevels: 2}
 		AssignedVariablesList {  name: "confounders"; title: qsTr("Confounders"); allowedColumns: ["scale","nominal","ordinal"]; info: qsTr("Confounders")}
 	}
+	
 	Group {
     title: qsTr("Non-linear specification of the treatment model  (overrides confounders specification)")
     
@@ -58,36 +59,33 @@ Form
         wrapMode: Text.WordWrap
     }
 	}
-	Group
-	{
-		title: qsTr("Weighting specifics")
+	
+	Group{
+	title: qsTr("Weighting specifics")
 
 		CheckBox
 		{
-			name: "stabilize"           // Single boolean option
+			name: "stabilize"         
 			label: qsTr("Stabilize weights")
 			checked: false
 		}
-
-		Group {
-			title: qsTr("Trim weights")
-			enabled: distance_dropdown.currentIndex !== 2
-			visible: controls.distance_dropdown.currentIndex !== 2
-			CheckBox {
-				name: "caliperEnabled"
-				label: qsTr("banana")
-				checked: false
-			}
+	}
+	Group{
+		title: qsTr("Truncating weights")
+		CheckBox{
 			
-			DoubleField {
-				name: "trim"
-				enabled: caliperEnabled.checked
-				label: qsTr("Percentile to trim")
-				defaultValue: 0.01
-				fieldWidth: 50
-				max: 1
-				decimals: 5
-			}
+				name: "truncateEnabled"
+				label: qsTr("Truncate")
+				checked: false
+		}	
+		DoubleField {
+			name: "truncate"
+			enabled: truncateEnabled.checked
+			label: qsTr("Percentile to truncate")
+			defaultValue: 0.01
+			fieldWidth: 50
+			max: 1
+			decimals: 5
 		}
 	}
 

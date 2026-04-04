@@ -4,7 +4,7 @@ import JASP.Module
 Description
 {
 	name		: "jaspModuleTemplate"
-	title		: qsTr("Propensity Score Matching")
+	title		: qsTr("Propensity Score Methods")
 	description	: qsTr("Examples for module builders")
 	version		: "0.1"
 	author		: "JASP Team"
@@ -17,7 +17,7 @@ Description
 
 	GroupTitle
 	{
-		title:	qsTr("Functions")
+		title:	qsTr("Methods")
 	}
 
 	Analysis
