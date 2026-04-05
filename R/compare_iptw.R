@@ -12,19 +12,26 @@ weights=ipwpoint(exposure=trt,
 # associate weight to dataset
 df$weight=weights$ipw.weights
 # plot
-ggplot(df,aes(x=weight,group=trt,fill=factor(trt)))+
-  geom_density()+
-  #guides(fill='none')+
-  theme_bw()
-#
-df$weight <- weights$ipw.weights
-bal <- cobalt::bal.tab(
+# calculate weights
+## assign weights
+df$weight=weights$ipw.weights
+## table it
+bal=cobalt::bal.tab(
   x          = trt ~ age,
   data       = df,
   weights    = df$weight,
   binary     = "std",
   un         = TRUE,
-  s.d.denom  = "pooled"
-)
-
+  s.d.denom  = "pooled")
+## print results
 print(bal$Balance)
+# see problems with plotting
+df$trt1=as.character(df$trt)
+# plot
+treat_col=df$trt1
+ggplot(df,aes(x=weight,fill=treat_col,alpha=0.3))+
+  geom_density()+
+  guides(alpha='none')+
+  scale_fill_manual(values=c('red','navy'))+
+  theme_bw()
+

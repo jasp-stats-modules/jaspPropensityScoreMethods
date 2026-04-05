@@ -1,19 +1,23 @@
 # density plot
 .createIptwDensities = function(jaspResults, dataw, options) {
   treatment_col <- options$treatment
-  dataw[[treatment_col]] <- as.character(dataw[[treatment_col]])
 
-  p <- ggplot2::ggplot(dataw, aes(x = .data[["weight"]], fill = .data[[treatment_col]])) +
-    ggplot2::geom_density(alpha = options$opacity) +
+  # Add explicit treatment column with proper labels
+  dataw$treatment_label <- factor(dataw[[treatment_col]],
+                                  levels = c(0, 1),
+                                  labels = c("Untreated", "Treated"))
+
+  p <- ggplot2::ggplot(dataw, aes(x = weight, fill = treatment_label)) +
+    ggplot2::geom_density(data = ~ .x[.x$treatment_label == "Untreated", ],
+                         alpha = options$opacity, color = NA) +
+    ggplot2::geom_density(data = ~ .x[.x$treatment_label == "Treated", ],
+                         alpha = options$opacity, color = NA) +
     ggplot2::scale_fill_manual(values = c(options$untreatedColor, options$treatedColor),
-                               labels = c("Untreated", "Treated"),
-                               guide  = ggplot2::guide_legend(nrow=1, byrow=T)) +
-    ggplot2::guides(alpha = "none") +
-    ggplot2::labs(x    = "IPW Weights",
-                  y    = "Density",
-                  fill = "Treatment") +
+                              labels = c("Untreated", "Treated")) +
+    ggplot2::labs(x = "IPW Weights", y = "Density", fill = "Treatment") +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom")
+
   weightPlot <- createJaspPlot(title = "Weight Densities", width = 400, height = 300)
   weightPlot$dependOn(c("treatment", "confounders", "stabilize", "truncateEnabled", "opacity", "untreatedColor", "treatedColor"))
   weightPlot$plotObject <- p

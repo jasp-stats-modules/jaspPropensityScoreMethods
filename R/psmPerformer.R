@@ -179,6 +179,8 @@
 
 # matching performer
 matching=function(jaspResults,dataset,options){
+  if (length(options$confounders) == 0) return()
+  if (length(options$treatment) == 0) return()
   # define formula with custom
   #if (!is.null(options$customFormula) && nchar(options$customFormula) > 0) {
     # Split user input by + and trim spaces

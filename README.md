@@ -11,12 +11,13 @@ This module was developed during the first JASP hackathon, in February 2026.
 Need help
 
 * Allow non-linear forms in the treatment model, (customFormula)
+* Add legend to iptw plot
 * Save selected dataset
 
 Other 
 
+* Format code for iptw
 * Check random combinations of matching with compare_psm
-* Add legends to ipwt
 * Change label of module (draw confounding)
 
 Fill in README file
