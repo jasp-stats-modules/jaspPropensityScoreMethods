@@ -12,6 +12,7 @@ Need help
 
 * Allow non-linear forms in the treatment model, (customFormula)
 * Add legend to iptw plot
+* Bootstrapping analysis for iptw standard errors? 
 * Save selected dataset
 
 Other 
