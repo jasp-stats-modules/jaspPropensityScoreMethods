@@ -45,12 +45,16 @@ For inverse probability of treatment weighting, the following options are availa
 * For psm:
 
     * Allow non-linear forms in the treatment model, (customFormula)
-    * Gray-out "caliper" when distance is set to "Mahalanobis"
+    * Gray-out "caliper" when: i) distance is set to "Mahalanobis", ii) method is set to "Optimal"
     * Save selected dataset
+
+* For iptw:
+
+    * Add legend to iptw plot
+    * Bootstrapping analysis for iptw standard errors or save dataset
 
 #### Other 
 
-* Check random combinations of matching with compare_psm
 * Change label of module (draw confounding)
 
 

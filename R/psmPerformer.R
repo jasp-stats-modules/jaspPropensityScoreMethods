@@ -1,3 +1,4 @@
+# covariate balance before matching
 .createSummaryTableBefore=function(jaspResults, matched, options) {
   summary=summary(matched)
   sumall=summary$sum.all
@@ -15,7 +16,7 @@
   table$addRows(df)
   jaspResults[["balanceTableBefore"]]=table
 }
-
+# covariate balance after matching
 .createSummaryTableAfter=function(jaspResults, matched, options) {
   summary=summary(matched)
   summatch=summary$sum.matched
@@ -32,8 +33,7 @@
   table$addRows(df)
   jaspResults[["balanceTableAfter"]]=table
 }
-
-
+# sample size table
 .createSampleSizeTable=function(jaspResults, matched, options) {
   summary=summary(matched)
   sumnn=summary$nn
@@ -50,7 +50,6 @@
   table$addRows(df)
   jaspResults[["SampleSizes"]]=table
 }
-
 # love plot
 .createLovePlot=function(jaspResults,matched,options){
   # plot
