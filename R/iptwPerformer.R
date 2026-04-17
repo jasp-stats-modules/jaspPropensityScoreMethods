@@ -1,16 +1,19 @@
 # density of weights plot
 .createIptwDensities=function(jaspResults, dataw, options) {
-  treatment_col=options$treatment
+  treatment=options$treatment
   # add treatment column to dataset with factor format
-  dataw$treatment_label=factor(dataw[[treatment_col]],
+  dataw$treatment_label=factor(dataw[[treatment]],
                                levels = c(0, 1),
                                labels = c("Untreated", "Treated"))
   # plot weights by treatment
-  p=ggplot2::ggplot(dataw, aes(x = weight, fill = .data[[treatment_col]]))+
+  p=ggplot2::ggplot(dataw, aes(x = weight, fill = treatment_label, color = treatment_label))+
     ggplot2::geom_density(alpha=options$opacity)+
     ggplot2::scale_fill_manual(values = c(options$untreatedColor, options$treatedColor),
                               labels = c("Untreated", "Treated")) +
+    ggplot2::scale_color_manual(values = c(options$untreatedColor, options$treatedColor),
+                               labels = c("Untreated", "Treated")) +
     ggplot2::labs(x = "Weights", y = "Density", fill = "Treatment") +
+    ggplot2::guides(col='none')+
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "bottom")
   # create JASP plot
@@ -57,12 +60,13 @@
   # create dataset to plot
   plotdf=data.frame(ps=ps,treatment=as.character(dataset[[treatment]]))
   # plot densities of ps for both groups
-  p=ggplot2::ggplot(plotdf, aes(x=ps, fill=treatment)) +
+  p=ggplot2::ggplot(plotdf, aes(x=ps, fill=treatment, color = treatment)) +
     ggplot2::geom_density(alpha=options$opacity) +
     ggplot2::scale_fill_manual(values=c(options$untreatedColor, options$treatedColor),
                                labels=c("Untreated", "Treated"),
                                guide=ggplot2::guide_legend(nrow = 1, byrow = T)) +
-    ggplot2::guides(alpha="none") +
+    ggplot2::scale_color_manual(values=c(options$untreatedColor, options$treatedColor)) +
+    ggplot2::guides(alpha="none",col='none') +
     ggplot2::labs(x="Propensity Score",
                   y="Density",
                   fill="Treatment") +
@@ -99,7 +103,7 @@
   table=createJaspTable(title = gettext("Weight Summary"))
   table$dependOn(c("treatment", "confounders", "stabilize", "truncateEnabled", "truncate"))
   table$addRows(df)
-  jaspResults[["weightSummary"]] <- table
+  jaspResults[["weightSummary"]]=table
 }
 # smd summary table
 .createSMDTable=function(jaspResults, dataset, options) {
@@ -162,7 +166,7 @@ iptw=function(jaspResults, dataset, options) {
   # get treatment column
   trt_col=dataset[[options$treatment]]
   # define weights
-  w=ifelse(treat_col==1,
+  w=ifelse(trt_col==1,
            1/ps,
            1/(1-ps))
   # compute stabilized weights, if asked to

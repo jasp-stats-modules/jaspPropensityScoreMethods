@@ -108,12 +108,14 @@
       gglist[[p]] = ggplot2::ggplot(df,
                                     aes(x=.data[[covs[p]]],
                                         group=factor(.data[[treat]]),
-                                        fill=factor(.data[[treat]])))+
+                                        fill=factor(.data[[treat]]),
+                                        color=factor(.data[[treat]])))+
         ggplot2::geom_density(alpha=options$opacity)+
         ggplot2::scale_fill_manual(values = c(options$untreatedColor,options$treatedColor),
                                    labels = c("Untreated", "Treated"),
                                    guide = ggplot2::guide_legend(nrow=1,byrow=T))+
-        ggplot2::guides(alpha='none')+
+        ggplot2::scale_color_manual(values = c(options$untreatedColor,options$treatedColor))+
+        ggplot2::guides(alpha='none',col='none')+
         ggplot2::labs(fill="Treatment")+
         ggplot2::theme_bw()
 
@@ -122,11 +124,13 @@
       gglist[[p]] = ggplot2::ggplot(df,
                                     aes(x=.data[[covs[p]]],
                                         group=factor(.data[[treat]]),
-                                        fill=factor(.data[[treat]])))+
-        ggplot2::geom_bar(position='dodge',col='black',alpha=options$opacity)+
+                                        fill=factor(.data[[treat]]),
+                                        color=factor(.data[[treat]])))+
+        ggplot2::geom_bar(position='dodge',alpha=options$opacity)+
         ggplot2::scale_fill_manual(values = c(options$untreatedColor,options$treatedColor),
                                    labels = c("Untreated", "Treated"),
                                    guide = ggplot2::guide_legend(nrow=1,byrow=T))+
+        ggplot2::scale_color_manual(values = c(options$untreatedColor,options$treatedColor))+
         ggplot2::guides(alpha='none',col='none')+
         ggplot2::labs(fill="Treatment")+
         ggplot2::theme_bw()
