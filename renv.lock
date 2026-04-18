@@ -4,7 +4,7 @@
     "Repositories": [
       {
         "Name": "CRAN",
-        "URL": "https://cloud.r-project.org"
+        "URL": "https://packagemanager.posit.co/cran/2026-04-01"
       }
     ]
   },
@@ -44,7 +44,7 @@
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.1.1-1",
+      "Version": "1.1.1",
       "Source": "Repository",
       "Requirements": [
         "methods",
@@ -60,7 +60,7 @@
     },
     "S7": {
       "Package": "S7",
-      "Version": "0.2.1-1",
+      "Version": "0.2.1",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -77,7 +77,7 @@
     },
     "backports": {
       "Package": "backports",
-      "Version": "1.5.1",
+      "Version": "1.5.0",
       "Source": "Repository",
       "Requirements": [
         "R"
@@ -145,7 +145,7 @@
     },
     "cli": {
       "Package": "cli",
-      "Version": "3.6.6",
+      "Version": "3.6.5",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -195,7 +195,7 @@
     },
     "cpp11": {
       "Package": "cpp11",
-      "Version": "0.5.4",
+      "Version": "0.5.3",
       "Source": "Repository",
       "Requirements": [
         "R"
@@ -251,7 +251,7 @@
     },
     "dplyr": {
       "Package": "dplyr",
-      "Version": "1.2.1",
+      "Version": "1.2.0",
       "Source": "Repository",
       "Requirements": [
         "cli",
@@ -379,7 +379,7 @@
     },
     "glue": {
       "Package": "glue",
-      "Version": "1.8.1",
+      "Version": "1.8.0",
       "Source": "Repository",
       "Requirements": [
         "methods",
@@ -512,7 +512,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspBase",
-      "RemoteSha": "951dc3b69177f9498f617c6661f75f72e3082d3e"
+      "RemoteSha": "6498cf34f9f49f4568329b054ac4704aa4708e17"
     },
     "jaspGraphs": {
       "Package": "jaspGraphs",
@@ -537,7 +537,7 @@
       "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
-      "RemoteSha": "db3c899263a1d8d236ed0e7e3a7b6814b48c14ae"
+      "RemoteSha": "ea8631fcd6bf2c816a01f610fe4a33f0bb995ef1"
     },
     "jquerylib": {
       "Package": "jquerylib",
@@ -590,11 +590,10 @@
     },
     "lazyeval": {
       "Package": "lazyeval",
-      "Version": "0.2.3",
+      "Version": "0.2.2",
       "Source": "Repository",
       "Requirements": [
-        "R",
-        "rlang"
+        "R"
       ]
     },
     "lifecycle": {
@@ -609,7 +608,7 @@
     },
     "magrittr": {
       "Package": "magrittr",
-      "Version": "2.0.5",
+      "Version": "2.0.4",
       "Source": "Repository",
       "Requirements": [
         "R"
@@ -654,7 +653,7 @@
     },
     "openssl": {
       "Package": "openssl",
-      "Version": "2.4.0",
+      "Version": "2.3.5",
       "Source": "Repository",
       "Requirements": [
         "askpass"
@@ -759,7 +758,7 @@
     },
     "processx": {
       "Package": "processx",
-      "Version": "3.8.7",
+      "Version": "3.8.6",
       "Source": "Repository",
       "Requirements": [
         "ps",
@@ -794,7 +793,7 @@
     },
     "purrr": {
       "Package": "purrr",
-      "Version": "1.2.2",
+      "Version": "1.2.1",
       "Source": "Repository",
       "Requirements": [
         "cli",
@@ -824,7 +823,7 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.2.0",
+      "Version": "1.1.7",
       "Source": "Repository",
       "Requirements": [
         "R",
@@ -1059,7 +1058,7 @@
     },
     "vctrs": {
       "Package": "vctrs",
-      "Version": "0.7.3",
+      "Version": "0.7.2",
       "Source": "Repository",
       "Requirements": [
         "cli",
