@@ -5,7 +5,11 @@
       {
         "Name": "CRAN",
         "URL": "https://packagemanager.posit.co/cran/2026-04-02"
-      }
+      },
+    {
+      "Name": "Fallback",
+      "URL": "https://cloud.r-project.org"
+    }
     ]
   },
   "Packages": {
